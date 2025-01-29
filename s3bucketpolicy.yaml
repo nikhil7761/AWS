@@ -1,0 +1,16 @@
+{
+   "version": "2017-10-17"
+   "statement":[
+    {
+     "Effect": "Allow",
+     "Action": "*",
+     "Resource": "*"
+
+    }
+
+
+   ]
+
+
+
+}
