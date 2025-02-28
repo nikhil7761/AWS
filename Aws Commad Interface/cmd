@@ -1,0 +1,5 @@
+aws ec2 describe-images --owners amazon
+
+--filters "Name=root-device-type,Values=ebs"
+
+--filters "Name=platform,Values=windows"
