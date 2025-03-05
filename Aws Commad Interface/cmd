@@ -3,3 +3,5 @@ aws ec2 describe-images --owners amazon
 --filters "Name=root-device-type,Values=ebs"
 
 --filters "Name=platform,Values=windows"
+
+aws ec2 attach-internet-gateway --vpc-id \"vpc-0b5c49c7c7a78180b\" --internet-gateway-id \"igw-0655a2d12f1c0a71a\" --region ap-south-1
