@@ -1,0 +1,19 @@
+AWSTEMPLATEFORMATION: '2010-09-09'
+Description: 'cloud formation are from for the security group'
+
+
+Resources:
+  MySecurityGroup:
+   Type: AWS::EC2::SecurityGroup
+   properties:
+     GroupDescription: "Allow traffic only on the 443"
+     VpcId: vpc-0f56c1645f68cb682
+     SecurityGroupIngress:
+       - IpProtocol: tcp
+         FromPort: 443
+         ToPort: 80
+         CidrIp: 0.0.0.0/0
+
+  Tags:
+    - key: "https"
+      value: "443"  
