@@ -1,0 +1,48 @@
+import boto3
+import os
+
+def lambda_handler(event, context):
+    rds_client = boto3.client('rds')
+
+    # Get the RDS instance ID from event or environment variable
+    instance_id = event.get('instance_id') or os.getenv('RDS_INSTANCE_ID')
+
+    new_instance_type = "db.t3.micro"  # Target instance type
+
+    # Ensure the instance ID is provided
+    if not instance_id:
+        return {
+            "statusCode": 400,
+            "body": "Missing RDS instance ID"
+        }
+
+    try:
+        # Describe the current RDS instance
+        response = rds_client.describe_db_instances(DBInstanceIdentifier=instance_id)
+        current_instance_type = response['DBInstances'][0]['DBInstanceClass']
+
+        if current_instance_type == new_instance_type:
+            return {
+                "statusCode": 200,
+                "body": f"Instance {instance_id} is already of type {new_instance_type}"
+            }
+
+        # Modify the RDS instance type
+        print(f"Modifying RDS instance {instance_id} to {new_instance_type}")
+        rds_client.modify_db_instance(
+            DBInstanceIdentifier=instance_id,
+            DBInstanceClass=new_instance_type,
+            ApplyImmediately=True
+        )
+
+        return {
+            "statusCode": 200,
+            "body": f"Successfully modified {instance_id} to {new_instance_type}"
+        }
+
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return {
+            "statusCode": 500,
+            "body": f"Failed to modify RDS instance: {str(e)}"
+        }
